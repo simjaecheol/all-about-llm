@@ -1,9 +1,18 @@
 # 사이트 기본 설정
-title: All About LLM Docs
+title: All About LLM
 description: LLM Documents for Starters!
 theme: just-the-docs
 baseurl: /all-about-llm
 url: https://simjaecheol.github.io
+
+permalink: pretty
+
+defaults:
+  - scope:
+      path: "docs"
+      type: "pages"
+    values:
+      layout: "default"
 
 # 색상 설정
 color_scheme: dark
