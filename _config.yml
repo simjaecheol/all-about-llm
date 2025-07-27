@@ -1,8 +1,23 @@
-title: Just the Docs Template
-description: A starter template for a Jeykll site using the Just the Docs theme!
+# 사이트 기본 설정
+title: All About LLM Docs
+description: LLM Documents for Starters!
 theme: just-the-docs
+baseurl: /all-about-llm
+url: https://simjaecheol.github.io
 
-url: https://just-the-docs.github.io
+# 색상 설정
+color_scheme: dark
 
+# 검색 설정
+search_enabled: true
+search:
+  heading_level: 2
+  preview: 2
+
+# 사이드바 설정
 aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+  "Github": "https://github.com/simjaecheol/all-about-llm"
+
+# 추가 설정
+mermaid:
+  version: "9.1.3"
