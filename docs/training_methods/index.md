@@ -20,7 +20,7 @@ LLM 학습은 크게 다음과 같은 단계로 구성됩니다:
 
 ## 학습 방법론 상세
 
-### [Pre-Training](./pre_training.md)
+### [Pre-Training](./pre_training)
 
 **기본 언어 능력 습득 단계**
 
@@ -36,7 +36,7 @@ Pre-Training은 LLM의 기초를 다지는 핵심 단계입니다. 이 단계에
 - Foundation Model 생성
 - 다양한 다운스트림 작업의 기반 제공
 
-### [Instruction Following](./instruction_following.md)
+### [Instruction Following](./instruction_following)
 
 **지시사항 이해 및 수행 능력 학습**
 
@@ -53,7 +53,7 @@ Pre-Training은 LLM의 기초를 다지는 핵심 단계입니다. 이 단계에
 - 복잡한 프롬프트 엔지니어링 없이도 원하는 결과 획득
 - 실용적이고 안전한 AI 시스템 구축
 
-### [PEFT (Parameter Efficient Fine Tuning)](./PEFT.md)
+### [PEFT (Parameter Efficient Fine Tuning)](./PEFT)
 
 **효율적인 파라미터 적응 방법**
 
@@ -72,7 +72,7 @@ Pre-Training은 LLM의 기초를 다지는 핵심 단계입니다. 이 단계에
 - Catastrophic Forgetting 완화
 - 다중 작업 지원으로 저장 공간 절약
 
-### [강화학습 (Reinforcement Learning)](./reinforcement_learning.md)
+### [강화학습 (Reinforcement Learning)](./reinforcement_learning)
 
 **인간 피드백을 통한 정책 최적화**
 
@@ -93,7 +93,7 @@ Pre-Training은 LLM의 기초를 다지는 핵심 단계입니다. 이 단계에
 - 안전성 및 윤리성 강화
 - 사용자 선호도 반영
 
-### [Knowledge Distillation](./knowledge_distillation.md)
+### [Knowledge Distillation](./knowledge_distillation)
 
 **큰 모델의 지식을 작은 모델로 전수**
 
@@ -114,7 +114,7 @@ Pre-Training은 LLM의 기초를 다지는 핵심 단계입니다. 이 단계에
 - 메모리 사용량 대폭 감소
 - 중소 기업도 고성능 AI 모델 접근 가능
 
-### [Evaluation](./evaluation.md)
+### [Evaluation](./evaluation)
 
 **모델 성능 평가 및 개선**
 

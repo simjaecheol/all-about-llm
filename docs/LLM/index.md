@@ -29,7 +29,7 @@ nav_order: 2
 
 이 섹션에서는 LLM의 핵심 구성 요소와 작동 원리를 체계적으로 학습합니다. 각 챕터는 LLM을 이해하는 데 필수적인 개념들을 다루며, 실무에서 활용할 수 있는 지식을 제공합니다.
 
-### 1. [Attention 메커니즘](../LLM/attention.md)
+### 1. [Attention 메커니즘](../LLM/attention)
 
 **학습 목표**: LLM의 핵심 기술인 Attention 메커니즘의 원리와 작동 방식 이해
 
@@ -46,7 +46,7 @@ nav_order: 2
 - 다양한 Attention 기법의 특징과 장단점
 - 성능 최적화를 위한 Attention 개선 방법
 
-### 2. [Transformer 아키텍처](../LLM/transformer.md)
+### 2. [Transformer 아키텍처](../LLM/transformer)
 
 **학습 목표**: LLM의 기본 구조인 Transformer의 전체적인 아키텍처와 각 구성 요소의 역할 이해
 
@@ -63,7 +63,7 @@ nav_order: 2
 - RNN 대비 Transformer의 장점
 - 실무에서 Transformer 기반 모델 활용 방법
 
-### 3. [Encoder-Decoder 모델 구조](../LLM/encoder_decoder.md)
+### 3. [Encoder-Decoder 모델 구조](../LLM/encoder_decoder)
 
 **학습 목표**: 다양한 Transformer 기반 모델 구조의 특징과 활용 분야 이해
 
@@ -80,7 +80,7 @@ nav_order: 2
 - 실제 서비스에서의 모델 활용 전략
 - 모델 간 성능 비교 및 선택 기준
 
-### 4. [Token과 Tokenization](../LLM/token.md)
+### 4. [Token과 Tokenization](../LLM/token)
 
 **학습 목표**: LLM이 텍스트를 처리하는 기본 단위인 Token과 Tokenization 과정 이해
 
@@ -97,7 +97,7 @@ nav_order: 2
 - Token 수 계산과 비용 관리 방법
 - 효율적인 Token 사용을 위한 최적화 기법
 
-### 5. [Embedding](../LLM/embedding.md)
+### 5. [Embedding](../LLM/embedding)
 
 **학습 목표**: Token이 벡터로 변환되는 Embedding 과정과 그 중요성 이해
 
@@ -114,7 +114,7 @@ nav_order: 2
 - Embedding을 통한 텍스트 분석 방법
 - Embedding 최적화를 통한 성능 향상 기법
 
-### 6. [LLM Parameters](../LLM/parameters.md)
+### 6. [LLM Parameters](../LLM/parameters)
 
 **학습 목표**: LLM의 출력을 제어하는 다양한 파라미터들의 역할과 조정 방법 이해
 
@@ -131,7 +131,7 @@ nav_order: 2
 - 반복 문제 해결을 위한 파라미터 조정 기법
 - 실무에서 효과적인 파라미터 튜닝 방법
 
-### 7. [Context Length](../LLM/context_length.md)
+### 7. [Context Length](../LLM/context_length)
 
 **학습 목표**: LLM이 한 번에 처리할 수 있는 텍스트 길이의 개념과 관리 방법 이해
 
@@ -148,7 +148,7 @@ nav_order: 2
 - 긴 텍스트를 효율적으로 처리하는 방법
 - 비용과 성능을 고려한 Context Length 관리
 
-### 8. [Hallucination](../LLM/hallucination.md)
+### 8. [Hallucination](../LLM/hallucination)
 
 **학습 목표**: LLM의 가장 중요한 문제점인 Hallucination의 원인과 해결 방법 이해
 
