@@ -1,7 +1,7 @@
 ---
 title: Evaluation
 parent: LLM 학습 방법
-nav_order: 3
+nav_order: 6
 ---
 
 # Evaluation
@@ -23,6 +23,8 @@ LLM 모델의 평가는 모델의 성능을 객관적으로 측정하고 개선 
 - **실용성**: 실제 사용 환경과 유사한 평가
 
 ## 기존 NLP 평가 방법론
+
+LLM이 나오기 이전의 자연어 처리(Natural Language Processing)에서 학습된 모델을 평가하는 방법을 LLM에도 동일하게 적용할 수 있습니다.
 
 ### 1. 텍스트 생성 평가
 
