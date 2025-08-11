@@ -1,6 +1,6 @@
 ---
 title: Tool Call
-nav_order: 10
+nav_order: 11
 ---
 
 # Tool Call (Function Call)
