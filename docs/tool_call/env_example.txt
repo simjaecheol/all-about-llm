@@ -1,0 +1,17 @@
+# 환경 변수 설정 파일 (.env)
+# 이 파일을 프로젝트 루트에 .env로 저장하세요
+
+# OpenAI API 키 (https://platform.openai.com에서 발급)
+OPENAI_API_KEY=your-openai-api-key-here
+
+# 사용 방법:
+# 1. 위 your-openai-api-key-here 부분을 실제 API 키로 교체
+# 2. 파일명을 .env로 저장 
+# 3. python-dotenv 라이브러리 설치: pip install python-dotenv
+# 4. 코드에서 다음과 같이 사용:
+#
+# from dotenv import load_dotenv
+# import os
+# 
+# load_dotenv()
+# api_key = os.getenv("OPENAI_API_KEY")
