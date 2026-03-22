@@ -8,20 +8,27 @@ LLM 기술이 발전함에 따라 LLM을 활용한 서비스들이 많이 출시
 
 ## 목차
 
-- [LLM](./docs/LLM/)
-- [Prompt Engineering](./docs/prompt_engineering/)
 - [RAG](./docs/RAG/)
-- [Agent](./docs/agent/)
-- [Serving](./docs/serving/)
-- [Inference](./docs/inference/)
-- [Optimization](./docs/optimization/)
-- [Training Framework](./docs/training_framework/)
+- [LLM](./docs/LLM/)
 - [Training Methods](./docs/training_methods/)
-- [Multi Modal](./docs/multi_modal/)
+- [Evaluation](./docs/evaluation/)
+- [Training Framework](./docs/training_framework/)
+- [Optimization](./docs/optimization/)
+- [Inference](./docs/inference/)
+- [Serving](./docs/inference_engine/)
+- [추론 플랫폼 (Inference Platform)](./docs/inference_platform/)
+- [Prompt Engineering](./docs/prompt_engineering/)
 - [Tool Call](./docs/tool_call/)
 - [Context Engineering](./docs/context_engineering/)
-- [Open Source Project](./docs/open_source_project/)
 - [Reasoning](./docs/reasoning/)
+- [Multi Modal](./docs/multi_modal/)
+- [Agent](./docs/agent/)
+- [Security](./docs/security/)
+- [Agent Skills](./docs/skills/)
+- [Open Source Project](./docs/open_source_project/)
+- [MCP (Model Context Protocol)](./docs/mcp/)
+- [Glossary](./docs/glossary/)
+- [개발 가이드](./docs/development.md)
 
 ## 개발 환경 설정
 
