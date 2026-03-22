@@ -437,7 +437,43 @@ def calculate_creativity_score(response, criteria):
     return score
 ```
 
-### 4. 안전성 및 윤리성 평가
+### 4. 체크리스트 기반 이진 평가 (Checklist-based Binary Evaluation)
+
+최신 LLM 평가 트렌드는 BLEU나 ROUGE 같은 통계적 유사성 지표를 넘어, 모델이 특정 업무 요구사항을 실제로 충족했는지 여부를 **이진(Pass/Fail)**으로 판정하는 방식입니다. Samsung Research의 **TRUEBench**가 대표적인 사례입니다.
+
+```python
+def evaluate_with_checklist(response, checklist):
+    """체크리스트 기반 이진 평가 (TRUEBench 방식)"""
+    results = {}
+    total_passed = 0
+    
+    for criterion in checklist:
+        # 각 기준 충족 여부 판단 (주로 LLM-as-a-judge 활용)
+        is_passed = judge_criterion(response, criterion)
+        results[criterion] = is_passed
+        if is_passed:
+            total_passed += 1
+            
+    # 전체 통과율 계산
+    pass_rate = total_passed / len(checklist)
+    # 최종 결과: 모든 필수 조건을 충족해야 Pass (Binary)
+    final_result = "Pass" if pass_rate == 1.0 else "Fail"
+    
+    return final_result, results
+
+# 예시 체크리스트 (데이터 분석 작업)
+checklist = [
+    "결과가 JSON 형식인가?",
+    "상위 5개 항목이 모두 포함되었는가?",
+    "계산된 합계가 정확한가?",
+    "부적절한 개인정보가 마스킹되었는가?"
+]
+```
+
+**특징:**
+- **실무 중심**: '인간의 업무 보조'라는 실제 활용 목적에 부합하는 평가 가능
+- **객관성 확보**: 모호한 점수(1~10점) 대신 명확한 체크리스트 기준 적용
+- **에이전틱 평가**: 단순 답변 생성을 넘어 도구 사용 결과나 복합 제약 조건 준수 여부 확인에 적합
 
 #### 유해성 검사
 
