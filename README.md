@@ -18,9 +18,10 @@ flowchart LR
     A[Prompt Engineering] --> B[RAG]
     B --> C[Tool Call]
     C --> D[MCP]
-    D --> E[Agent Framework]
-    E --> F[Agentic AI]
-    F --> G[LLMOps]
+    D --> E[Agent Skills]
+    E --> F[Agent Framework]
+    F --> G[Agentic AI]
+    G --> H[LLMOps]
 ```
 
 ### 2. 로컬 LLM 기반 애플리케이션 개발자
@@ -34,7 +35,8 @@ flowchart LR
     D --> E[RAG]
     E --> F[Tool Call]
     F --> G[MCP]
-    G --> H[Agentic AI]
+    G --> H[Agent Skills]
+    H --> I[Agentic AI]
 ```
 
 ### 3. MLOps 및 서빙 엔지니어
