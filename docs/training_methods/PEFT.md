@@ -62,7 +62,24 @@ model = get_peft_model(model, lora_config)
 
 **성능**: GPT-3 175B에서 파라미터 수를 10,000배 감소시키면서도 동등한 성능 달성
 
-### 2. Adapter
+### 2. DoRA (Weight-Decomposed Low-Rank Adaptation)
+
+**핵심 원리**: 가중치 행렬을 **크기(Magnitude)**와 **방향(Direction)** 성분으로 분해한 뒤, 방향 성분에만 LoRA를 적용합니다.
+
+**특징**:
+- LoRA보다 Full Fine-tuning에 더 가까운 학습 능력을 보여줍니다.
+- 학습 안정성이 높으며, 복잡한 지시사항 이행 능력이 뛰어납니다.
+- 2026년 현재, LoRA를 대체하는 고성능 PEFT의 표준으로 자리 잡았습니다.
+
+### 3. KTO-PEFT (Kahneman-Tversky Optimization for PEFT)
+
+**핵심 원리**: LoRA나 DoRA 구조 위에서 KTO 손실 함수를 적용하여 정렬 학습을 수행합니다.
+
+**특징**:
+- 비교 쌍 데이터 없이 '좋음/나쁨' 라벨만으로 파라미터 효율적인 정렬이 가능합니다.
+- 자원이 제한된 환경에서 모델을 특정 도메인의 선호도에 맞추는 데 매우 효과적입니다.
+
+### 4. Adapter
 
 **핵심 원리**: Transformer의 각 레이어에 작은 bottleneck 모듈 삽입
 

@@ -1,8 +1,8 @@
 ---
 layout: page
 title: LLM as a Judge
-parent: Evaluation
-nav_order: 5
+parent: Introduction to LLM Evaluation
+nav_order: 4
 ---
 
 # LLM as a Judge

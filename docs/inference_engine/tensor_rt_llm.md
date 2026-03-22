@@ -8,57 +8,42 @@ nav_order: 3
 
 ## 아키텍처 및 핵심 기술
 
-### 컴파일 기반 최적화
-- Model Definition API를 통한 모델 정의
-- TensorRT 엔진으로 컴파일하여 NVIDIA GPU 최적화
-- C++ 런타임 권장 (Python 런타임도 지원)
+### Blackwell 및 최신 NVIDIA GPU 지원 (2025)
+- **Blackwell (B200/GB200)**: 2세대 Transformer Engine을 활용한 **FP4(4-bit)** 정밀도 추론을 세계 최초로 지원하여 H200 대비 2.5배 이상의 성능 향상.
+- **H200 (Hopper)**: 141GB HBM3e 메모리를 극대화하는 커널 최적화를 통해 단일 GPU에서 Falcon-180B와 같은 거대 모델도 INT4 AWQ로 고속 구동 가능.
 
-### 고급 최적화 기법
-- In-flight batching으로 동적 배치 처리
-- Paged KV cache, Quantized KV cache
-- 커스텀 FP8 양자화
-- 커스텀 CUDA 커널 최적화
+### 분산 서비스 (Disaggregated Serving)
+- **추론 단계 분리**: 컨텍스트(Prefill)와 생성(Generation) 단계를 물리적으로 분리된 GPU 노드에서 처리하여 리소스 활용도를 높이고 지연 시간을 최소화.
+- **NVLink 최적화**: GPU 간 초고속 데이터 전송을 통해 클러스터 단위의 대규모 서빙 효율 극대화.
 
-## 지원하는 디코딩 전략
+## 지원하는 디코딩 전략 및 샘플링
 
-### Speculative Decoding
-- EAGLE 기반 추측 디코딩으로 최대 3배 처리량 향상
-- Tree attention과 multi-round speculative decoding
-- CUDA Graph 최적화로 커널 실행 오버헤드 제거
+### 고급 투기적 디코딩 (Speculative Decoding)
+- **EAGLE-3**: 투기적 디코딩 기술의 통합으로 하드웨어 한계를 넘어서는 최대 4배의 처리량 추가 속도 향상 달성.
+- **Tree Attention**: 다중 토큰 예측을 동시에 검증하는 효율적인 메커니즘 제공.
 
-### 샘플링 전략
-- Beam search, top-K, top-P 샘플링
-- Temperature scaling 등 다양한 logits warper 지원
-- 고성능 샘플링 기능
+### 개발 편의성 개선
+- **PyTorch Native Workflow**: v1.0부터 PyTorch 기반 설계가 기본으로 채택되어 기존 모델의 포팅 및 튜닝 생산성이 비약적으로 향상.
 
-## 성능 특성
+## 성능 특성 및 양자화
 
-### 극한 성능 최적화
-- NVIDIA 하드웨어에서 최고 성능 달성
-- Llama 3.3 70B에서 3배 처리량 향상
-- 지연시간 최적화 (A100에서 50ms 미만)
-- 예측 가능한 실시간 성능 보장
-
-### 메모리 효율성
-- 고급 양자화로 메모리 사용량 대폭 감소
-- 제한된 GPU에서도 대형 모델 배포 가능
+### 극한의 정밀도와 최적화
+- **정밀도**: FP4, FP8, INT4 AWQ, INT8 KV Cache 등 모든 양자화 수준에서 업계 최고 수준의 성능 보장.
+- **Llama 4 (Maverick) 대응**: 400B 이상의 초거대 모델에서도 사용자당 1,000 tokens/sec 이상의 속도 실현.
 
 ## 장단점
 
 ### 장점
-- NVIDIA GPU에서 최고의 성능
-- 금융, 실시간 AI 애플리케이션에 적합
-- 고급 양자화 기법 지원
-- 예측 가능한 성능
+- **NVIDIA 최상의 성능**: Blackwell 등 최신 하드웨어의 모든 물리적 기능을 소프트웨어로 완벽히 끌어냄.
+- **예측 가능성**: 실시간 서비스 환경에서 지연 시간과 처리량의 편차가 매우 작음.
+- **엔터프라이즈 기능**: 금융, 자율주행 등 고신뢰성이 필요한 환경에 최적화.
 
 ### 단점
-- 복잡한 설정 및 튜닝 필요
-- NVIDIA 하드웨어 종속성 (벤더 락인)
-- 동적 배치 크기 변화에 취약
-- 개발 및 배포 시간 오버헤드
+- **하드웨어 종속성**: NVIDIA GPU 이외의 하드웨어는 지원하지 않음(Vendor Lock-in).
+- **컴파일 오버헤드**: 모델 최적화 엔진을 빌드하는 과정이 복잡하고 시간이 소요됨.
 
 ## 사용 시나리오
-- NVIDIA GPU 환경에서의 최고 성능 요구
-- 금융, 실시간 AI 애플리케이션
-- 예측 가능한 성능이 중요한 프로덕션 환경
-- NVIDIA 생태계 기반 인프라
+- Blackwell 및 Hopper GPU 기반의 최고 성능 인프라
+- 금융 서비스 등 예측 가능한 실시간 응답이 필수적인 환경
+- 초거대 모델(400B+)을 다수의 GPU에서 효율적으로 서빙해야 할 때
+- 정밀한 양자화(FP4/FP8)를 통한 인프라 비용 절감이 중요할 때

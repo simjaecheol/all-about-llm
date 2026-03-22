@@ -8,56 +8,48 @@ nav_order: 1
 
 ## 아키텍처 및 핵심 기술
 
-### PagedAttention 메모리 관리
-- KV 캐시의 메모리 효율적 관리를 위한 핵심 혁신
-- 메모리 단편화를 방지하고 동적 배치 처리 최적화
-- GPU 메모리 사용량을 크게 줄이면서 처리량 향상
+### vLLM V1 Alpha 아키텍처 (2025)
+- **비동기 스케줄링**: 스케줄링 오버헤드를 최소화하기 위한 비동기 엔진 구조로의 대대적 전환
+- **성능 최적화**: 텍스트와 멀티모달 데이터를 동일한 효율로 처리하기 위한 전역 메모리 관리자 도입
 
-### 3-Process 비동기 아키텍처
-- AsyncLLM: 비동기 래퍼로 요청 관리
-- EngineCore: 핵심 추론 엔진, 모델 실행 담당
-- 토큰화, 모델 추론, 디토큰화를 비동기로 처리하여 GPU 활용도 극대화
+### PagedAttention 및 자동 접두사 캐싱 (Prefix Caching)
+- **PagedAttention**: KV 캐시의 메모리 단편화를 방지하는 핵심 기술
+- **Hash-based Prefix Caching**: V1에서 도입된 해시 기반 매칭을 통해 멀티턴 대화 및 공통 프롬프트의 KV 캐시 재사용성 극대화 (이미지/오디오 임베딩 캐싱 포함)
 
-## 지원하는 디코딩 전략
+### Chunked Prefill 및 스케줄링
+- **Chunked Prefill**: 긴 프롬프트를 작은 청크(Chunk)로 나누어 처리하여 첫 토큰 생성 시간(TTFT)과 토큰 간 지연 시간(ITL)의 균형을 최적화
+- **Continuous Batching**: 동적 요청 처리를 통해 GPU 활용도 극대화
 
-### 고급 디코딩 알고리즘
-- Parallel sampling, beam search
-- Continuous batching으로 동적 요청 처리
-- Speculative decoding 지원
-- Chunked prefill 최적화
+## 지원하는 디코딩 전략 및 멀티모달
 
-### 양자화 기법
-- GPTQ, AWQ, AutoRound 지원
-- INT4, INT8, FP8 양자화
-- FlashAttention 및 FlashInfer 통합
+### 멀티모달(Multi-modal) 지원 강화
+- **Vision & Audio**: LLaVA, Qwen2-VL, Qwen2-Audio 등 최신 모델 지원
+- **Encoder Caching**: 비전/오디오 인코더의 출력값을 캐싱하여 반복적인 미디어 처리 비용 절감
 
-## 성능 특성
+### 고급 디코딩 및 양자화
+- **Speculative Decoding**: EAGLE-3 등 최신 기법 지원으로 처리량 향상
+- **FlashInfer 통합**: CUDA 백엔드에서 FlashInfer를 기본 사용하여 Blackwell 등 최신 하드웨어 성능 대응
+- **양자화**: GPTQ, AWQ, FP8, INT4/INT8 지원 및 AutoRound 통합
 
-### 처리량 우선
-- 높은 처리량과 낮은 지연시간 동시 달성
-- 표준 Hugging Face 파이프라인 대비 2-4배 성능 향상
-- GPU 활용률 최적화로 비용 효율성 제공
+## 성능 및 하드웨어 지원
 
-### 하드웨어 지원
-- NVIDIA GPU, AMD CPU/GPU, Intel CPU/GPU
-- TPU, AWS Neuron, PowerPC CPU 지원
-- 다중 GPU 텐서/파이프라인 병렬 처리
+### 하드웨어 확장성
+- NVIDIA GPU (Blackwell 지원), AMD ROCm (MI300X), Intel (Gaudi/CPU), TPU, AWS Inferentia/Neuron 등 광범위한 하드웨어 지원
+- 다중 GPU 텐서/파이프라인 병렬 처리 최적화
 
 ## 장단점
 
 ### 장점
-- OpenAI API 호환성으로 쉬운 마이그레이션
-- 동적 배치 처리와 캐싱으로 실시간 추론 최적화
-- 수평 확장성 및 클라우드 네이티브 배포 지원
-- 광범위한 모델 지원 (Llama, Mistral, Mixtral 등)
+- **업계 표준**: 가장 넓은 모델 지원 범위(100+ 아키텍처)와 성숙한 생태계
+- **멀티모달 최적화**: 텍스트와 미디어가 혼합된 복잡한 워크플로우에 강력함
+- **OpenAI API 호환성**: 쉬운 마이그레이션과 클라우드 네이티브 배포 지원
 
 ### 단점
-- 특정 하드웨어 최적화 부족 (TensorRT-LLM 대비)
-- 대용량 입력 처리 시 지연시간 증가 가능
-- 초기 설정 시 GPU 인프라 요구사항
+- **오버헤드**: 순수 C++ 엔진(LMDeploy 등) 대비 스케줄링 오버헤드가 존재할 수 있음
+- **복잡도**: V1 전환기에 따른 설정 옵션의 변화 및 학습 곡선
 
 ## 사용 시나리오
-- 클라우드 기반 LLM 서빙
-- 높은 처리량이 필요한 프로덕션 환경
-- 다양한 하드웨어 환경에서의 배포
-- 연구 및 실험을 위한 범용 플랫폼
+- 클라우드 기반 범용 LLM/VLM 서빙
+- 다양한 모델 아키텍처와 하드웨어를 혼용하는 환경
+- 멀티턴 대화가 빈번한 에이전트 서비스
+

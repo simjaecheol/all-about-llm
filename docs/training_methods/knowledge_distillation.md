@@ -195,8 +195,9 @@ LLaVA-MoD는 **Mixture of Experts(MoE) 구조**와 distillation을 결합하여 
 ### 2. 실시간 지식 전수
 EchoLM은 **실시간 knowledge distillation**을 통해 1.4-5.9배 처리량 향상과 28-71% 지연 시간 감소를 동시에 달성했습니다.
 
-### 3. 자동화된 파이프라인
-**Distilling step-by-step** 방법론은 Chain-of-Thought 추론 과정까지 증류하여 더 적은 데이터로도 우수한 성능을 보입니다.
+#### 3. 자동화된 파이프라인
+**Distilling step-by-step** 방법론은 Chain-of-Thought 추론 과정까지 증류하여 더 적은 데이터로도 우수한 성능을 보입니다. 2026년 현재, 단순히 정답만 전수하는 것이 아니라 교사 모델의 **사고 과정(Reasoning Steps)**을 통째로 전수하는 **CoT Distillation**이 소형 모델의 지능을 극대화하는 표준 기법으로 자리 잡았습니다.
+
 
 ## 결론
 

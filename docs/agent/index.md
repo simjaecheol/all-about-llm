@@ -42,26 +42,19 @@ has_children: true
 - Self-Correction: 오류 발생 시 스스로 수정하는 메커니즘
 - Planning & Execution: 계획자와 실행자의 분리 구조
 
-### 4. [주요 프레임워크 및 생태계](./frameworks)
-**학습 목표**: 최신 에이전트 개발 프레임워크의 특징과 선택 기준 파악
-- **LangGraph**: 상태 중심의 복잡한 그래프 설계
-- **CrewAI**: 역할 기반의 멀티 에이전트 협업
-- **PydanticAI**: 타입 안정성을 강조한 개발자 친화적 프레임워크
-- **AutoGen (AG2)**: 대화형 오케스트레이션
-
-### 5. [멀티 에이전트 시스템 (MAS)](./multi_agent_systems)
+### 4. [멀티 에이전트 시스템 (MAS)](./multi_agent_systems)
 **학습 목표**: 여러 에이전트가 협업하여 복잡한 문제를 해결하는 구조 이해
 - Hierarchical vs. Joint Collaboration 모델
 - Agent Hand-off: 에이전트 간 작업 이관 및 상태 공유
 - 협업 프로토콜 및 통신 방식
 
-### 6. [평가 및 관측성](./evaluation_and_observability)
+### 5. [평가 및 관측성](./evaluation_and_observability)
 **학습 목표**: 에이전트의 성능을 측정하고 사고 과정을 추적하는 방법 이해
 - 에이전트 전용 벤치마크 (WebArena, Tau-Bench)
 - LLM-as-a-Judge를 활용한 실행 결과 평가
 - Tracing 도구 (Langfuse, Arize Phoenix) 활용법
 
-### 7. [실무 고려 사항 및 보안](./production_considerations)
+### 6. [실무 고려 사항 및 보안](./production_considerations)
 **학습 목표**: 실제 서비스 도입 시 직면하는 기술적, 윤리적 과제 해결
 - Human-in-the-Loop (HITL) 설계
 - 보안: 프롬프트 인젝션 방어 및 도구 실행 권한 관리

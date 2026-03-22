@@ -1,11 +1,12 @@
 ---
 title: PydanticAI
-parent: 주요 프레임워크 및 생태계
-grand_parent: Agent
+parent: Agent Framework
 nav_order: 3
 ---
 
 # PydanticAI
+
+<img src="../../assets/images/pydantic_logo.png" alt="PydanticAI Logo" width="150" />
 
 PydanticAI는 Pydantic 팀에서 개발한 에이전트 라이브러리로, 현대적인 파이썬 백엔드 엔지니어링의 정수를 에이전트 개발에 도입했습니다. '타입 안정성(Type-safe)'과 '테스트 가능성'을 극대화한 것이 특징입니다.
 

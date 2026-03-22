@@ -248,160 +248,78 @@ python openai-tool-example.py
 - 파일 시스템 조작
 - 웹 스크래핑 및 자동화
 
-### 🛡️ 보안 및 모범 사례
+### 🛡️ 현대적 개발 보안 및 관리 기법 (2026)
 
-예제 코드에는 다음과 같은 보안 고려사항이 포함되어 있습니다:
+이 실습 예제들을 통해 Tool Call의 개념부터 실제 구현까지 단계적으로 학습할 수 있으며, 특히 2026년 기준 표준이 된 **타입 안전성(Type-Safety)**과 **에이전틱 거버넌스** 패턴을 익힐 수 있습니다.
 
-- **API 키 보호**: 환경변수 사용, 코드에 직접 입력 금지
-- **입력 검증**: 허용된 문자만 사용, 악성 코드 실행 방지
-- **함수 권한 제한**: 최소 권한 원칙 적용
-- **오류 정보 노출 방지**: 민감한 시스템 정보 숨김
+#### 1. 타입 안전한 도구 정의 (PydanticAI 활용)
 
-이 실습 예제들을 통해 Tool Call의 개념부터 실제 구현까지 단계적으로 학습할 수 있으며, 실무에서 바로 활용 가능한 코드 패턴을 익힐 수 있습니다. 특히 OpenAI의 최신 API 구조와 모범 사례를 반영하여 작성되었으므로, 현재 업계 표준에 맞는 개발 방법을 학습할 수 있습니다.
+JSON 스키마를 수동으로 작성하는 대신, Python 타입 힌트를 사용하여 런타임 오류를 방지하고 자동 재시도를 활성화합니다.
+
+```python
+from pydantic import BaseModel, Field
+from pydantic_ai import Agent, RunContext
+
+# 1. 입력 스키마 정의
+class WeatherInput(BaseModel):
+    city: str = Field(description="도시 이름")
+    unit: str = Field(default="celsius", description="온도 단위")
+
+# 2. 에이전트 및 도구 설정
+agent = Agent('openai:gpt-4o')
+
+@agent.tool
+def get_weather(ctx: RunContext[None], input_data: WeatherInput) -> str:
+    # input_data는 Pydantic에 의해 이미 검증된 상태임
+    return f"{input_data.city}의 날씨는 20도입니다."
+```
+
+#### 2. Human-in-the-loop (HITL) 패턴
+
+고위험 도구(결제, 데이터 삭제, 메일 발송 등)는 실행 전 사람의 승인을 받는 단계를 명시적으로 설계해야 합니다.
+
+- **Checkpoint**: 도구 실행 직전 상태를 저장하고 대기합니다.
+- **Review UI**: 사용자에게 에이전트가 생성한 인자와 실행 의도를 명확히 표시합니다.
+- **Override**: 사용자가 인자를 직접 수정하거나 실행을 거부할 수 있도록 구현합니다.
+
+#### 3. 검증 기반 자동 재시도 (Validation Retries)
+
+모델이 잘못된 형식의 인자를 생성했을 때, 오류 메시지를 다시 모델에게 전달하여 스스로 수정하게 합니다. PydanticAI와 같은 현대적 프레임워크는 이를 기본적으로 지원합니다.
 
 ---
 
-## Tool Call 구현 시 고려사항
-
-### 도구 정의
-
-**명확한 명세 작성**:
-- 명확한 이름과 설명 제공
-- JSON 스키마를 통한 매개변수 정의
-- 예상 입력/출력 형식 명시
-- 도구의 한계와 제약사항 명시
-
-**도구 설계 원칙**:
-- 단일 책임 원칙: 하나의 도구는 하나의 명확한 기능만 수행
-- 일관된 인터페이스: 모든 도구가 동일한 패턴을 따름
-- 확장 가능성: 새로운 도구 추가가 용이한 구조
-
-### 오류 처리
-
-**도구 실행 실패 대응**:
-- 도구 실행 실패에 대한 적절한 예외 처리
-- 타임아웃 설정 및 재시도 로직
-- 사용자에게 명확한 오류 메시지 제공
-- 대체 도구나 방법 제시
-
-**오류 분류 및 처리**:
-- 네트워크 오류: 재시도 로직 및 대체 서버 시도
-- 인증 오류: 사용자에게 권한 확인 요청
-- 데이터 오류: 입력 검증 및 수정 제안
-
-### 보안 고려사항
-
-**API 키 및 인증 정보 보호**:
-- 민감한 API 키 및 인증 정보 보호
-- 환경 변수나 보안 저장소 활용
-- 키 순환 및 접근 권한 관리
-
-**접근 제어**:
-- 도구 접근 권한 최소화 원칙 적용
-- 사용자별 도구 접근 권한 설정
-- 감사 로그 및 모니터링 구현
-
-**입출력 검증**:
-- 입력 검증 및 출력 필터링
-- SQL 인젝션, XSS 등 보안 위협 방지
-- 민감한 정보 노출 방지
-
-## 성능 최적화 팁
+## 🔧 성능 최적화 및 운영 팁
 
 ### 효율적인 도구 설계
 
-**도구별 명확한 책임 분리**:
-- 각 도구가 독립적으로 동작하도록 설계
-- 도구 간 의존성 최소화
-- 병렬 처리 가능한 구조로 설계
+**On-demand Tool Discovery**:
+- 도구가 수백 개인 경우, 모든 스키마를 컨텍스트에 넣지 마세요.
+- 사용자 질문과 유사한 도구 명세만 동적으로 로드(Semantic Search)하여 토큰을 절약하세요.
 
-**캐싱 전략**:
-- 반복 호출 결과 캐싱
-- 도구별 적절한 캐시 TTL 설정
-- 캐시 무효화 전략 수립
+**Parallel Execution Strategy**:
+- 독립적인 I/O 작업(여러 도시 날씨 조회 등)은 반드시 병렬로 처리하여 응답 속도를 최적화하세요.
 
-### 병렬 처리 최적화
+### 모니터링 및 관측 가능성 (Observability)
 
-**동시 도구 실행**:
-- 독립적인 도구들을 병렬로 실행
-- 의존성이 있는 도구들의 실행 순서 최적화
-- 리소스 사용량 모니터링 및 제한
+- **Traces**: 도구 호출 전 '사고(Thinking)' 과정부터 결과 반환까지의 전체 경로를 추적하세요.
+- **Cost Analysis**: 도구 호출로 인한 토큰 소비량과 실행 비용을 실시간으로 집계하세요.
+- **Success Rate**: 특정 도구의 실패율이 높다면 프롬프트(Description) 또는 스키마를 수정해야 합니다.
 
-## 실제 구현 예시
+## 실제 구현 예시 (현대적 접근)
 
-### Python을 사용한 Tool Call 구현
-
+### Python (PydanticAI)
 ```python
-from typing import List, Dict, Any
-import json
+from pydantic_ai import Agent
 
-class ToolRegistry:
-    def __init__(self):
-        self.tools = {}
-    
-    def register_tool(self, name: str, tool: callable, schema: Dict[str, Any]):
-        self.tools[name] = {
-            'function': tool,
-            'schema': schema
-        }
-    
-    def get_tool(self, name: str):
-        return self.tools.get(name)
-    
-    def list_tools(self):
-        return list(self.tools.keys())
+agent = Agent('openai:gpt-4o')
 
-class ToolCaller:
-    def __init__(self, tool_registry: ToolRegistry):
-        self.registry = tool_registry
-    
-    def call_tool(self, tool_name: str, parameters: Dict[str, Any]):
-        tool_info = self.registry.get_tool(tool_name)
-        if not tool_info:
-            raise ValueError(f"Tool {tool_name} not found")
-        
-        try:
-            result = tool_info['function'](**parameters)
-            return {'success': True, 'result': result}
-        except Exception as e:
-            return {'success': False, 'error': str(e)}
-```
+@agent.tool_plain
+def add(a: int, b: int) -> int:
+    return a + b
 
-### JavaScript/TypeScript를 사용한 Tool Call 구현
-
-```typescript
-interface ToolSchema {
-  name: string;
-  description: string;
-  parameters: Record<string, any>;
-  required: string[];
-}
-
-interface Tool {
-  schema: ToolSchema;
-  execute: (params: any) => Promise<any>;
-}
-
-class ToolManager {
-  private tools: Map<string, Tool> = new Map();
-  
-  registerTool(name: string, tool: Tool): void {
-    this.tools.set(name, tool);
-  }
-  
-  async executeTool(name: string, params: any): Promise<any> {
-    const tool = this.tools.get(name);
-    if (!tool) {
-      throw new Error(`Tool ${name} not found`);
-    }
-    
-    try {
-      return await tool.execute(params);
-    } catch (error) {
-      throw new Error(`Tool execution failed: ${error.message}`);
-    }
-  }
-}
+# 실행 시 타입 검증 및 에러 교정이 자동으로 수행됨
+result = agent.run_sync('123 더하기 456은?')
+print(result.data)
 ```
 
 ## 테스트 및 디버깅
@@ -409,49 +327,14 @@ class ToolManager {
 ### 도구 테스트 전략
 
 **단위 테스트**:
-- 각 도구의 개별 기능 테스트
-- 다양한 입력 케이스에 대한 테스트
-- 오류 상황 시뮬레이션
+- 각 도구 함수가 다양한 입력(Edge cases)에 대해 올바른 출력을 내는지 독립적으로 테스트하세요.
 
-**통합 테스트**:
-- 여러 도구를 조합한 워크플로우 테스트
-- 실제 API와의 연동 테스트
-- 성능 및 부하 테스트
-
-### 디버깅 도구
-
-**로깅 및 모니터링**:
-- 도구 실행 로그 기록
-- 성능 메트릭 수집
-- 오류 발생 시 상세 정보 수집
-
-**개발 환경 설정**:
-- 디버그 모드 활성화
-- 단계별 실행 및 중단점 설정
-- 변수 상태 추적
+**에이전트 시뮬레이션**:
+- 모델이 특정 상황에서 올바른 도구를 선택하는지 시나리오 테스트를 수행하세요.
 
 ## 배포 및 운영
 
-### 배포 전략
+### 거버넌스 및 규정 준수 (EU AI Act 등)
 
-**단계적 배포**:
-- 개발 → 스테이징 → 프로덕션 환경 순차 배포
-- 각 단계에서 충분한 테스트 수행
-- 롤백 계획 수립
-
-**모니터링 및 알림**:
-- 도구 실행 성공률 모니터링
-- 응답 시간 및 처리량 추적
-- 오류 발생 시 즉시 알림
-
-### 운영 최적화
-
-**성능 튜닝**:
-- 정기적인 성능 분석 및 최적화
-- 리소스 사용량 모니터링
-- 확장성 계획 수립
-
-**유지보수**:
-- 정기적인 도구 업데이트 및 보안 패치
-- 사용자 피드백 수집 및 반영
-- 문서화 및 지식 공유
+- **Audit Logs**: 에이전트가 내린 모든 도구 호출 결정과 그 근거(Reasoning trace)를 불변 로그로 기록하세요.
+- **Access Control**: 도구별 실행 권한을 최소화 원칙에 따라 관리하세요.

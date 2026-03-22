@@ -1,7 +1,6 @@
 ---
 title: Smolagents
-parent: 주요 프레임워크 및 생태계
-grand_parent: Agent
+parent: Agent Framework
 nav_order: 5
 ---
 

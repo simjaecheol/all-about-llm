@@ -21,10 +21,8 @@ nav_order: 6
 ## 3. 관측성 (Observability) & Tracing
 에이전트 내부에서 어떤 일이 일어나는지 투명하게 들여다보는 기술입니다.
 - **Tracing**: 에이전트가 어떤 생각(Thought)을 했고, 어떤 도구(Tool)를 어떤 파라미터로 호출했으며, 어떤 결과(Observation)를 얻었는지 타임라인별로 기록합니다.
-- **주요 도구**:
-    - **Langfuse**: 오픈소스 기반의 강력한 트레이싱 및 분석 도구.
-    - **Arize Phoenix**: 에이전트 실행 과정을 시각화하고 평가 루프를 제공.
-    - **LangSmith**: LangChain/LangGraph와 긴밀하게 통합된 디버깅 환경.
+
+상세한 LLMOps 도구 구성과 플랫폼 특징에 대해서는 [LLMOps](../llmops/index.md) 섹션을 참고하세요.
 
 ## 4. 에이전트 디버깅 전략
 - **Step-by-step Execution**: 루프를 한 단계씩 실행하며 상태 변화 확인.

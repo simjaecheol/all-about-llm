@@ -1,11 +1,12 @@
 ---
 title: CrewAI
-parent: 주요 프레임워크 및 생태계
-grand_parent: Agent
+parent: Agent Framework
 nav_order: 2
 ---
 
 # CrewAI
+
+<img src="../../assets/images/crewai_logo.png" alt="CrewAI Logo" width="150" />
 
 CrewAI는 '역할 기반(Role-based)' 협업을 통해 복잡한 비즈니스 프로세스를 자동화하는 데 최적화된 프레임워크입니다. "AI 팀"을 구성하여 실제 사람들과 일하는 것과 유사한 방식으로 에이전트를 운영할 수 있습니다.
 

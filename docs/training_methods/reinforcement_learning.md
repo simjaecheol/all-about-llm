@@ -156,79 +156,64 @@ SFT에서 예제로 학습된 모델과 보상 모델을 가지고 강화학습 
 
 ## 주요 기법들
 
-### PPO (Proximal Policy Optimization)
-**가장 널리 사용되는 강화학습 알고리즘**입니다.
+### GRPO (Group Relative Policy Optimization)
+**DeepSeek에서 제안한 최신 고효율 강화학습 기법**입니다.
 
 **특징:**
-- 안정적 (큰 변화 방지)
-- 효율적 (여러 번 업데이트 가능)
-- 간단함 (구현이 쉬움)
+- **Critic-free**: 기존 PPO에서 필수적이었던 비싼 비판 모델(Value Model/Critic)을 완전히 제거하여 연산량을 획기적으로 낮췄습니다.
+- **Group Reward**: 하나의 질문에 대해 여러 답변(Group)을 생성하고, 그들 사이의 상대적인 점수를 계산하여 정책을 업데이트합니다.
+- **Reasoning Efficiency**: 대규모 추론 모델(o1, DeepSeek-R1 스타일) 학습 시 메모리 사용량을 최소화하면서 강력한 논리적 사고 능력을 부여하는 데 최적화되어 있습니다.
 
-#### PPO에서의 Episode 처리
-```python
-# 실제 TRL 라이브러리 예시
-for batch in dataloader:
-    query_tensors = batch['input_ids']  # 프롬프트
-    
-    # Episode 생성: 프롬프트에서 완전한 응답까지
-    response_tensors = ppo_trainer.generate(
-        query_tensors, 
-        max_new_tokens=50,
-        do_sample=True,
-        pad_token_id=tokenizer.eos_token_id
-    )
-    
-    # 각 response_tensor가 하나의 episode trajectory
-    trajectories = list(zip(query_tensors, response_tensors))
-```
+### RLVR (Reinforcement Learning with Verifiable Rewards)
+**인간의 주관적 평가 대신 객관적 검증 지표를 보상으로 사용하는 기법**입니다.
+
+**특징:**
+- **Outcome Verification**: 수학적 정답(Ground Truth), 코드 실행 결과, 유닛 테스트 통과 여부 등을 보상으로 사용합니다.
+- **Robustness**: 보상 해킹(Reward Hacking, 정답은 틀렸으나 인간을 기쁘게 하는 답변을 생성하는 현상)을 원천 차단합니다.
+- **Self-Improving**: 모델이 스스로 수천 개의 사고 경로를 시도하고 정답에 도달하는 경로만 보상받으며 지능을 개선합니다.
 
 ### DPO (Direct Preference Optimization)
-**2023년에 제안된 혁신적인 기법**입니다.
+**보상 모델 없이 직접 선호도 학습**
+- 훈련이 안정적이고 계산 자원을 절약할 수 있어 널리 쓰이지만, 최근에는 Online 방식이나 KTO로 발전하고 있습니다.
 
-**장점:**
-- 보상 모델 없이 직접 선호도 학습
-- 훈련이 더 안정적
-- 계산 자원 절약
+### Online DPO & KTO
+- **Online DPO**: 고정된 데이터셋이 아니라, 모델이 실시간으로 생성한 답변을 평가하여 학습에 반영함으로써 성능을 극대화합니다.
+- **KTO (Kahneman-Tversky Optimization)**: 비교 쌍 데이터 없이 '좋음/나쁨' 라벨만으로 경제적인 학습을 가능하게 합니다.
 
 ### Constitutional AI
-**Anthropic에서 개발한 독특한 방법**입니다.
-
-**핵심 아이디어:**
-- AI에게 "헌법(규칙)"을 제공
-- AI가 스스로 답변을 평가
-- 문제가 있으면 스스로 수정
+**Anthropic에서 개발한 독특한 방법**
+- AI에게 "헌법(규칙)"을 제공하고, AI가 스스로 답변을 평가하고 수정하도록 하여 안전성을 강화합니다.
 
 ## 최신 기법들의 Episode 처리
 
 ### Macro Actions (MA-RLHF)
-**MA-RLHF**에서는 토큰 단위가 아닌 더 큰 단위의 행동을 사용합니다:
+토큰 단위가 아닌 문장이나 구문 수준의 더 큰 단위로 행동을 정의하여 장기적인 문맥 유지와 신용 할당 문제를 개선합니다.
 
-```python
-# 기존: 토큰 수준 행동
-actions = [token1, token2, token3, token4, token5]
+### Dynamic Sampling
+효과적인 그래디언트가 발생하는 에피소드(너무 쉽지도 너무 어렵지도 않은)만 선별하여 학습 효율을 높입니다.
 
-# MA-RLHF: 구문 수준 행동
-macro_actions = [phrase1, phrase2, phrase3]
-# phrase1 = [token1, token2]
-# phrase2 = [token3, token4] 
-# phrase3 = [token5]
-```
+## 실제 구현
 
-**장점:**
-- 신용 할당 문제 완화 (temporal distance 단축)
-- 30% 성능 향상 달성
+### TRL & OpenRLHF 라이브러리 활용
+현재 Hugging Face의 **TRL**과 대규모 분산 학습에 특화된 **OpenRLHF**가 업계 표준으로 자리 잡고 있습니다. 특히 OpenRLHF는 수천 개의 GPU를 활용한 대규모 GRPO 및 PPO 학습을 지원합니다.
 
-### Dynamic Sampling (DAPO)
-**DAPO** 기법에서는 episode의 품질에 따라 동적으로 샘플링합니다:
+## 최신 트렌드 (2025-2026)
 
-```python
-# 효과적인 gradient가 있는 episode만 선별
-effective_episodes = []
-for episode in generated_episodes:
-    accuracy = evaluate_episode(episode)
-    if 0 < accuracy < 1:  # 완벽하지도, 완전 실패도 아닌 경우
-        effective_episodes.append(episode)
-```
+#### 1. 추론 특화 강화학습 (Reasoning-focused RL)
+- **OpenAI o1/o3, DeepSeek-R1**: 모델이 답을 내놓기 전 내부적으로 사고를 확장(Inference Scaling)하도록 학습된 모델들이 주류가 되었습니다.
+- **Chain of Thought RL**: 단순히 답을 맞히는 것을 넘어, 논리적인 풀이 과정을 명확히 전개하도록 강화학습을 수행합니다.
+
+#### 2. 검증 가능한 보상의 확대
+- 수학, 코딩뿐만 아니라 정답이 명확한 사실 관계나 논리적 일관성 검증에도 Verifiable Reward 시스템이 적용되고 있습니다.
+
+#### 3. RL-first Post-training
+- 과거에는 SFT(지도 학습)가 주력이었으나, 이제는 최소한의 SFT 후 강력한 **RL 중심의 사후 학습**을 통해 모델의 지능을 극한으로 끌어올리는 방식이 선호됩니다.
+
+## 결론
+
+강화학습은 LLM이 단순한 텍스트 생성기를 넘어서 **검증 가능하고 논리적인 추론자**가 되도록 하는 핵심 동력입니다.
+
+PPO에서 시작하여 GRPO와 RLVR로 이어지는 기술의 진화는 모델의 효율성을 극대화하고 있으며, 앞으로는 추론 시점의 연산량(Compute)을 효율적으로 제어하는 방향으로 더욱 발전할 것입니다.
 
 ## 실제 구현
 

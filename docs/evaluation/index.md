@@ -28,7 +28,7 @@ LLM 모델의 평가는 모델의 성능을 객관적으로 측정하고 개선 
 
 ## Table of Contents
 
-- [Evaluation Benchmarks](./benchmarks.md) - 업계 표준 평가 벤치마크 (MMLU, HellaSwag, ARC 등)
+- [Evaluation Benchmarks](./benchmarks/index.md) - 업계 표준 평가 벤치마크 (MMLU, HellaSwag, ARC 등)
 - [Automated Metrics](./metrics.md) - 자동화된 평가 지표 (Perplexity, BLEU, ROUGE 등)
 - [Human Evaluation](./human_evaluation.md) - 인간 주도 평가 과정 및 기준 (A/B 테스트, 품질 평가 등)
 - [LLM as a Judge](./llm_as_a_judge.md) - LLM을 평가자로 활용하는 방법

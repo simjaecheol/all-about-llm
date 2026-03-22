@@ -1,11 +1,12 @@
 ---
 title: LangGraph
-parent: 주요 프레임워크 및 생태계
-grand_parent: Agent
+parent: Agent Framework
 nav_order: 1
 ---
 
 # LangGraph
+
+<img src="../../assets/images/langchain_logo.png" alt="LangGraph Logo" width="150" />
 
 LangGraph는 LangChain 생태계의 일부로, 에이전트와 다중 에이전트 시스템을 구축하기 위해 설계된 강력한 프레임워크입니다. 특히 '순환(Cycles)'이 포함된 복잡한 로직을 그래프 형태로 모델링하는 데 특화되어 있습니다.
 
