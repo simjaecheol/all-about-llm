@@ -21,7 +21,7 @@ OpenClaw는 다음과 같은 4개 계층의 논리적 구조를 가집니다.
 
 1.  **Gateway Layer (게이트웨이 계층)**: 중앙 신경망 역할을 하는 WebSocket 서버로, 다양한 메시징 앱의 요청을 오케스트레이션합니다.
 2.  **Reasoning Layer (추론 계층)**: LLM과 고도화된 '메가프롬프트'를 결합하여 사용자의 의도를 분석하고 실행 계획을 수립합니다.
-3.  **Memory System (메모리 시스템)**: 복잡한 벡터 DB 대신 일반 Markdown 파일을 활용하여 세션 로그와 설정을 관리합니다. 'Write-Ahead Logging' 방식을 차용하여 데이터 안정성을 확보했습니다.
+3.  **Memory System (메모리 시스템)**: 복잡한 벡터 DB 대신 일반 Markdown 파일을 활용하여 세션 로그와 설정을 관리합니다. 특히 **[메모리 임베딩(Memory Embeddings)](../agent/memory_embeddings.md)** 기법을 사용하여, 로컬 환경에서도 대규모 세션 로그에 대한 시맨틱 검색과 문맥 주입을 지원합니다. 또한 'Write-Ahead Logging' 방식을 차용하여 데이터 안정성을 확보했습니다.
 4.  **Skills & Execution Layer (스킬 및 실행 계층)**: 커뮤니티에서 개발된 스킬들을 로드하여 실제 작업을 수행하는 런타임 환경입니다.
 
 ## 한계 및 이슈

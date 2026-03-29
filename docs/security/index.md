@@ -22,7 +22,12 @@ nav_order: 120
 - **Constitutional AI (CAI)**: 모델이 사전에 정의된 윤리 헌장(Constitution)을 기반으로 스스로 출력을 검증 및 수정
 - **DPO (Direct Preference Optimization)**: 보상 모델 없이 직접 선호도 데이터를 기반으로 최적화
 
-### 3. 방어 기법 (Defense Mechanisms)
+### 3. [동적 에이전트 보안 위협 (Dynamic Agent Risks)](./dynamic-agent-risks.md)
+단순 LLM을 넘어 MCP, Tools, Skills 및 로컬 환경을 조작하는 에이전트가 가지는 치명적인 위협과 아키텍처 방어 방안을 다룹니다.
+- **Confused Deputy & Indirect Prompt Injection**
+- **도구 실행 권한 분리 및 Human-in-the-Loop (HITL)**
+
+### 4. 방어 기법 (Defense Mechanisms)
 - **Guardrails**: 모델의 입출력을 중간에 가로채어 검열, 필터링, 정제(예: NeMo Guardrails, Llama Guard)
 - **System Prompt Hardening**: 안전 관련 명령어를 포함하여 룰을 강화한 시스템 프롬프트 작성
 - **Input/Output Filtering**: 입력 텍스트와 출력 텍스트에 대한 의도 분석 및 비속어/비정상 패턴 차단 시스템
