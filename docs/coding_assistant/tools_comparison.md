@@ -1,28 +1,17 @@
 ---
 layout: default
-title: 주요 도구 비교 (The Big Five)
+title: 주요 도구 비교 (The Big Six)
 parent: Agentic Coding Assistant
 nav_order: 2
 ---
 
-# 주요 도구 비교 (The Big Five)
+# 주요 도구 비교 (The Big Six)
 
 2025~2026년 에이전틱 코딩 도구 시장은 사용자의 선호도와 작업 방식에 따라 크게 **IDE 통합형**과 **CLI 우선형**으로 나뉩니다. 현재 업계를 주도하는 주요 도구들을 비교합니다.
 
 ---
 
-## 1. Google Antigravity (안티그래비티)
-**"에이전트 중심(Agent-first) 개발의 종착점"**
-
-- **특징**: Google이 2025년 말 발표한 차세대 IDE로, 단순 보조를 넘어 AI가 스스로 개발 전 과정을 수행하도록 설계되었습니다.
-- **핵심 기능**: 
-    - **자율 워크플로우**: 목표 설정 시 계획 수립부터 코드 작성, 터미널 실행, 브라우저 검증까지 AI가 전담 수행.
-    - **Manager View**: 여러 에이전트의 작업을 스레드 형태로 관리하고, 작업 녹화 영상과 스크린샷 등 검증 가능한 아티팩트(Artifacts) 제공.
-    - **Gemini 3 시리즈 탑재**: 최신 Gemini 모델을 기반으로 하며, 타사 모델(Claude 등)과의 연동도 지원.
-- **장점**: 에디터-터미널-브라우저를 아우르는 강력한 자율성, Google 생태계(Flutter 등)와의 긴밀한 연동.
-- **단점**: 현재 프리뷰 단계로 일부 기능이 제한적일 수 있음.
-
-## 2. Cursor (커서)
+## 1. Cursor (커서)
 **"가장 매끄러운 UX, IDE 통합의 표준"**
 
 - **특징**: VS Code를 포크(Fork)하여 만든 전용 IDE입니다. AI가 단순 확장이 아닌 핵심 기능으로 설계되었습니다.
@@ -33,7 +22,7 @@ nav_order: 2
 - **장점**: 압도적으로 부드러운 사용성, 설정이 거의 필요 없는 편리함.
 - **단점**: 자체 IDE를 사용해야 하므로 기존 VS Code 설정을 마이그레이션해야 할 수 있음.
 
-## 3. Claude Code (클로드 코드)
+## 2. Claude Code (클로드 코드)
 **"강력한 추론 능력, 아키텍처 관점의 수정"**
 
 - **특징**: Anthropic이 출시한 CLI(Command Line Interface) 기반의 에이전트입니다. Claude 3.5/3.7 Sonnet 모델의 성능을 극대화합니다.
@@ -42,6 +31,17 @@ nav_order: 2
     - **Direct Terminal Access**: 터미널 명령을 직접 실행하고 그 결과를 바탕으로 다음 단계의 행동을 결정합니다.
 - **장점**: 코딩 외의 복합적인 문제 해결 능력(예: 빌드 에러 디버깅, 테스트 코드 작성 및 검증)이 뛰어남.
 - **단점**: CLI 환경에 익숙하지 않은 사용자에게는 진입 장벽이 있을 수 있음.
+
+## 3. Gemini CLI
+**"강력한 도구 연동과 지능적 워크플로우"**
+
+- **특징**: Google Gemini 모델을 최대로 활용하는 CLI 기반 에이전트로, 풍부한 도구 연동과 'Skills' 시스템을 통해 고도로 지능화된 자동화를 지원합니다.
+- **핵심 기능**: 
+    - **Skills 시스템**: 특정 작업에 최적화된 전문가 스킬을 동적으로 활성화하여 복잡한 워크플로우를 처리합니다.
+    - **Deep Codebase Understanding**: 대규모 프로젝트의 구조와 의존성을 깊이 있게 이해하고 정교한 수정을 제안합니다.
+    - **Seamless Tool Integration**: 터미널 환경에서 다양한 개발 도구와 유연하게 결합되어 자율적으로 작업을 수행합니다.
+- **장점**: 'Skills'를 통한 확장성, Gemini 모델의 긴 컨텍스트 윈도우 활용, 터미널 중심의 높은 생산성.
+- **단점**: CLI 환경에 익숙해야 하며, 복잡한 UI 기반 작업에는 제한이 있을 수 있음.
 
 ## 4. Cline (클라인, 구 Claude Dev)
 **"높은 투명성, MCP의 강력한 활용"**
@@ -79,9 +79,9 @@ nav_order: 2
 
 | 도구 | 인터페이스 | 주요 타겟 | 강점 |
 | :--- | :--- | :--- | :--- |
-| **Antigravity** | Desktop App (Agent-first) | 에이전틱 개발자 | 완전 자율 워크플로우, 검증 가능성 |
 | **Cursor** | IDE (VS Code Fork) | 일반 개발자 | 최고 수준의 UX, 편리함 |
 | **Claude Code** | CLI (Terminal) | 숙련된 개발자 | 복잡한 추론 및 아키텍처 수정 |
+| **Gemini CLI** | CLI (Terminal) | 자동화 지향 개발자 | Skills 기반 확장성, 도구 연동 |
 | **Cline** | VS Code Extension | 파워 유저 | MCP 확장성, 투명성, 저비용 |
 | **Aider** | CLI (Terminal) | Git 기반 개발자 | Git 네이티브, 터미널 생산성 |
 | **Windsurf** | IDE (VS Code Fork) | 기업 및 개인 | Codeium 엔진 기반의 안정성 |
