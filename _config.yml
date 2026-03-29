@@ -32,3 +32,20 @@ aux_links:
 
 # 추가 설정
 # Mermaid is enabled globally via 'mermaid: true' above.
+
+exclude:
+  - GEMINI.md
+  - LICENSE
+  - README.md
+  - requirements.txt
+  - setup_black.py
+  - pyproject.toml
+  - Gemfile
+  - Gemfile.lock
+  - .pre-commit-config.yaml
+  - .github
+  - .agents
+  - .jekyll-cache
+  - .vscode
+  - node_modules
+  - vendor

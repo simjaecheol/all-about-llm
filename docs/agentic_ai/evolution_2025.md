@@ -1,5 +1,6 @@
 ---
-title: 2025년의 진화: Degrees of Agency
+layout: default
+title: "2025년의 진화: Degrees of Agency"
 parent: Agentic AI
 nav_order: 4
 ---

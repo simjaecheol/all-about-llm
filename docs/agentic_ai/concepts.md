@@ -1,4 +1,5 @@
 ---
+layout: default
 title: Agentic AI의 개념과 차별점
 parent: Agentic AI
 nav_order: 1

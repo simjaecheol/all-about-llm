@@ -1,4 +1,5 @@
 ---
+layout: default
 title: 에이전틱 설계 패턴
 parent: Agentic AI
 nav_order: 2

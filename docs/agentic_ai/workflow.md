@@ -1,4 +1,5 @@
 ---
+layout: default
 title: 에이전틱 워크플로우 설계
 parent: Agentic AI
 nav_order: 3
