@@ -1,6 +1,7 @@
 ---
-title: LLM Security
-nav_order: 15
+title: 보안 (Security)
+has_children: true
+nav_order: 120
 ---
 
 # LLM Security & Alignment

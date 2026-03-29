@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 개발 가이드
-nav_order: 99
+nav_order: 2
 ---
 
 # 개발 가이드 (Development Guide)

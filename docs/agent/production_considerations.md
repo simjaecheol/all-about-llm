@@ -1,7 +1,7 @@
 ---
 title: 실무 고려 사항 및 보안
 parent: Agent
-nav_order: 7
+nav_order: 6
 ---
 
 # 실무 고려 사항 및 보안

@@ -1,6 +1,7 @@
 ---
 title: LLM 학습 방법
-nav_order: 3
+has_children: true
+nav_order: 20
 ---
 
 # LLM 학습 방법

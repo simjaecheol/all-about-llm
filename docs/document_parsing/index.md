@@ -1,10 +1,10 @@
 ---
 layout: default
+---
 title: 문서 파싱 (Document Parsing)
 has_children: true
-nav_order: 2
+nav_order: 60
 ---
-
 # 문서 파싱 (Document Parsing)
 
 LLM 및 RAG 기반 시스템의 응답 품질은 입력되는 데이터의 질에 크게 의존합니다 (Garbage In, Garbage Out). 따라서 원본 문서를 텍스트로 얼마나 정확하고 일관되게 변환하느냐가 전체 시스템 성능을 좌우하는 핵심 요소입니다.

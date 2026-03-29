@@ -1,7 +1,7 @@
 ---
 layout: default
 title: LLM 최적화
-nav_order: 6
+nav_order: 30
 has_children: true
 ---
 

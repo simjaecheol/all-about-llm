@@ -1,6 +1,7 @@
 ---
 title: LLM 학습 프레임워크
-nav_order: 5
+has_children: true
+nav_order: 21
 ---
 
 # LLM 학습 프레임워크

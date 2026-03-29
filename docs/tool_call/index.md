@@ -1,6 +1,7 @@
 ---
 title: Tool Call
-nav_order: 11
+has_children: true
+nav_order: 72
 ---
 
 # Tool Call (Function Call)

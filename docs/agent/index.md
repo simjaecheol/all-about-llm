@@ -1,6 +1,6 @@
 ---
 title: Agent
-nav_order: 15
+nav_order: 71
 has_children: true
 ---
 
@@ -32,7 +32,7 @@ has_children: true
 ### 2. [에이전트 아키텍처 (Core Pillars)](./architecture)
 **학습 목표**: 에이전트를 구성하는 4가지 핵심 요소(Planning, Memory, Tools, Action) 이해
 - **Planning**: CoT, ReAct 등 추론 및 계획 기법
-- **Memory**: 단기 기억(State)과 장기 기억(RAG, Episodic)
+- **[Memory](./memory)**: 단기 기억(State)과 장기 기억(RAG, Episodic)
 - **Tools**: Function Calling과 MCP(Model Context Protocol)
 - **Action**: 실행 엔진 및 환경과의 상호작용
 

@@ -1,7 +1,7 @@
 ---
-title: 평가 및 관측성
+title: 에이전트 평가 및 관측성
 parent: Agent
-nav_order: 6
+nav_order: 5
 ---
 
 # 평가 및 관측성 (Evaluation & Observability)

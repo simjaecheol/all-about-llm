@@ -1,6 +1,6 @@
 ---
 title: MCP (Model Context Protocol)
-nav_order: 17
+nav_order: 130
 has_children: true
 ---
 

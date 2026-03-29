@@ -19,3 +19,7 @@ __pycache__/
 
 .gemini/
 gha-creds-*.json
+
+# skills
+.agents/
+skills-lock.json

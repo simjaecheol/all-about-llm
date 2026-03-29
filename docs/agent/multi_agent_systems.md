@@ -1,7 +1,7 @@
 ---
 title: 멀티 에이전트 시스템 (MAS)
 parent: Agent
-nav_order: 5
+nav_order: 4
 ---
 
 # 멀티 에이전트 시스템 (Multi-Agent Systems)

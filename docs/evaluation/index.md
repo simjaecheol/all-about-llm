@@ -1,7 +1,7 @@
 ---
 title: Introduction to LLM Evaluation
-parent: LLM 학습 방법
-nav_order: 4
+has_children: true
+nav_order: 100
 ---
 
 # Introduction to LLM Evaluation

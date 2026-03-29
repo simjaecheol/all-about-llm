@@ -2,7 +2,7 @@
 layout: default
 title: 오픈 웨이트 모델 (Open-Weight Models)
 has_children: true
-nav_order: 5
+nav_order: 160
 ---
 
 # 오픈 웨이트 모델 (Open-Weight Models)

@@ -1,6 +1,7 @@
 ---
 title: Context Engineering
-nav_order: 12
+has_children: true
+nav_order: 51
 ---
 
 # Context Engineering

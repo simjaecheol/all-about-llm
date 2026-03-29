@@ -1,6 +1,7 @@
 ---
 title: 추론(Inference)
-nav_order: 7
+has_children: true
+nav_order: 40
 ---
 
 # 추론(Inference)

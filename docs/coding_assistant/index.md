@@ -2,7 +2,7 @@
 layout: default
 title: Agentic Coding Assistant
 has_children: true
-nav_order: 19
+nav_order: 170
 ---
 
 # Agentic Coding Assistant

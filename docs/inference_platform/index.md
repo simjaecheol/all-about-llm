@@ -1,6 +1,6 @@
 ---
 title: 추론 플랫폼(Inference Platform)
-nav_order: 9
+nav_order: 42
 has_children: true
 ---
 

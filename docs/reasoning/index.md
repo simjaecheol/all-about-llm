@@ -1,6 +1,6 @@
 ---
 title: Reasoning
-nav_order: 13
+nav_order: 90
 has_children: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Agentic AI
-nav_order: 18
+nav_order: 70
 has_children: true
 ---
 
@@ -55,7 +55,7 @@ has_children: true
 | :--- | :--- | :--- | :--- |
 | **관점** | 작업을 수행하는 **개체** | 시스템의 **작동 방식** | 에이전트의 **전문 지식** |
 | **핵심 질문** | "누가 일을 하는가?" | "시스템이 어떻게 사고하는가?" | "그 일을 어떻게 수행하는가?" |
-| **구성 요소** | Persona, Tools, Memory | Iterative Loops, Reasoning | `SKILL.md`, Instructions |
+| **구성 요소** | Persona, Tools, [Memory](../agent/memory.md) | Iterative Loops, Reasoning | `SKILL.md`, Instructions |
 
 ---
 

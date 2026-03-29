@@ -1,6 +1,7 @@
 ---
 title: LLM이란 무엇인가?
-nav_order: 2
+has_children: true
+nav_order: 10
 ---
 
 # LLM이란 무엇인가?
