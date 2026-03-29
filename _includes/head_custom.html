@@ -1,0 +1,55 @@
+{% if site.mermaid %}
+<style>
+  .mermaid {
+    background-color: transparent !important;
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
+</style>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  
+  function initMermaid() {
+    // kramdown, rouge 등 다양한 파서가 생성하는 다양한 패턴 대응
+    const selectors = [
+      'pre > code.language-mermaid',
+      'code.language-mermaid',
+      '.language-mermaid pre',
+      '.language-mermaid code'
+    ];
+    
+    let found = false;
+    selectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(block => {
+        // 이미 변환된 것은 스킵
+        if (block.closest('.mermaid')) return;
+        
+        const container = block.tagName === 'CODE' ? block.parentElement : block;
+        const div = document.createElement('div');
+        div.className = 'mermaid';
+        div.textContent = block.textContent;
+        container.replaceWith(div);
+        found = true;
+      });
+    });
+
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: '{{ site.mermaid_theme | default: "dark" }}',
+      securityLevel: 'loose',
+    });
+
+    if (found) {
+      mermaid.run();
+    }
+  }
+
+  // 문서 로드 상태에 따라 즉시 실행 또는 이벤트 등록
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initMermaid();
+  } else {
+    document.addEventListener('DOMContentLoaded', initMermaid);
+  }
+</script>
+{% endif %}

@@ -7,6 +7,8 @@ url: https://simjaecheol.github.io
 
 permalink: pretty
 
+mermaid: true
+
 defaults:
   - scope:
       path: "docs"
@@ -16,6 +18,7 @@ defaults:
 
 # 색상 설정
 color_scheme: dark
+mermaid_theme: dark
 
 # 검색 설정
 search_enabled: true
@@ -28,5 +31,4 @@ aux_links:
   "Github": "https://github.com/simjaecheol/all-about-llm"
 
 # 추가 설정
-mermaid:
-  version: "9.1.3"
+# Mermaid is enabled globally via 'mermaid: true' above.
