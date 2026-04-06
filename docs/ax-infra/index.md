@@ -95,3 +95,15 @@ LLM 자원을 효율적으로 할당하고, 수많은 AI 모델(OpenAI, Anthropi
 앞서 설명한 5대 핵심 인프라 영역들을 프로덕션 레벨에서 단일 시스템으로 묶어서 띄우고 오토스케일링(Auto-scaling)하는 방안은 아래 문서를 참고하십시오.
 
 - **[인프라 배포 및 운영 전략 (Kubernetes & Docker)](./deployment.md)**
+- **[K9s (Kubernetes CLI UI)](./k9s.md)**: 안정적인 쿠버네티스 클러스터 모니터링과 생산성 향상을 위한 터미널 기반 관리 도구
+- **[Argo CD (GitOps CD 도구)](./argocd.md)**: Git을 단일 진실 공급원으로 삼는 GitOps 기반 지속적 배포. Self-healing, App of Apps, ApplicationSet, External Secrets 연동.
+- **[Kubernetes Ingress & AGIC](./ingress.md)**: 외부 트래픽을 내부 서비스로 L7 라우팅. 경로·Host 기반 라우팅, Ingress Controller 개념, cert-manager 자동 인증서 발급.
+- **[Istio (Service Mesh)](./istio.md)**: 클러스터 내부 East-West 트래픽 제어. 사이드카(Envoy), 카나리 배포, 서킷 브레이커, mTLS 자동 암호화, Kiali·Jaeger 가시성.
+
+---
+
+## 클라우드 플랫폼별 배포 가이드
+
+특정 클라우드 플랫폼의 네이티브 서비스를 활용한 프로덕션 배포 전략은 아래를 참고하십시오.
+
+- **[Azure Cloud 배포 (AI 프로덕션)](../azure/index.md)**: AKS, Application Gateway, ACR, Key Vault, Azure Monitor를 활용한 Azure 기반 AI 서비스 프로덕션 배포 완전 가이드
