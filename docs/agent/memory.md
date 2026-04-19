@@ -75,6 +75,154 @@ AI 에이전트에서 **메모리(Memory)**는 과거의 상호작용, 사용자
   - 사용자와의 실시간 채팅 응답성에 악영향을 주지 않기 위해 주로 **비동기(Async) 방식**으로 백그라운드 환경에서 동작합니다.
   - 방금 발생한 대화 턴(Turn)을 분석하여 영구적으로 기억해야 할 중요한 사실들을 별도로 추출하는 소위 **선택적 저장 패턴(Selective Addition)**을 수행합니다. (이 과정에서 더 작고 빠르며 저렴한 특수 LLM을 백그라운드에서 활용하기도 합니다)
 
+### 3.3. 주요 프레임워크별 메모리 구현 시퀀스
+
+앞서 설명한 Hook 및 Middleware 기반의 메모리 아키텍처가 실제 주요 에이전트 프레임워크에서 어떻게 구현되어 있는지 시퀀스 다이어그램으로 살펴봅니다. 대부분의 프레임워크는 에이전트의 '추론(Reasoning)' 로직 내부에 메모리 저장 코드를 하드코딩하지 않고, 외부 래퍼(Wrapper)나 콜백(Callback)을 통해 투명하게 처리하는 패턴을 취합니다.
+
+#### 1) LangGraph (Checkpointer 기반 Middleware 패턴)
+LangGraph는 상태(State) 기반의 그래프 엔진으로, 메모리(단기/장기) 저장을 `Checkpointer(Saver)`라는 미들웨어 계층으로 완전 분리합니다. 노드(에이전트 로직)는 상태 변화만 반환하며, 프레임워크가 백그라운드에서 DB 접근을 전담합니다.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant Graph as LangGraph (Pregel)
+    participant CP as Checkpointer (Middleware)
+    participant Node as Graph Nodes (LLM/Tools)
+
+    User->>Graph: invoke(input, config={thread_id})
+    activate Graph
+    
+    %% Pre-hook 개념
+    Graph->>CP: get_tuple(config)
+    CP-->>Graph: Return CheckpointTuple (이전 State 복원)
+    Graph->>Graph: User Input을 현재 State에 병합
+    
+    loop Superstep Execution
+        %% 메인 로직
+        Graph->>Node: 현재 State를 주입하여 Node 실행
+        Node-->>Graph: Return state updates (상태 변경점)
+        Graph->>Graph: State 업데이트 로직 적용
+        
+        %% Post-hook 개념
+        Graph->>CP: put(config, state, channel_values)
+        Note right of CP: 백그라운드에서 SQLite/Postgres 등에 비동기 저장
+    end
+    
+    Graph-->>User: Return final State
+    deactivate Graph
+```
+
+#### 2) LangChain (Runnable Decorator 패턴)
+LCEL(LangChain Expression Language) 체계에서는 `RunnableWithMessageHistory`라는 래퍼(Wrapper)가 미들웨어 역할을 수행하여 대화 기록 입출력을 가로챕니다.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant Wrapper as RunnableWithMessageHistory<br>(Middleware)
+    participant History as BaseChatMessageHistory (DB)
+    participant Agent as Inner Runnable (Agent/LLM)
+
+    User->>Wrapper: invoke(input, config={session_id})
+    activate Wrapper
+    
+    %% Pre-hook 개념
+    Wrapper->>History: get_messages(session_id)
+    History-->>Wrapper: Return 과거 메시지 리스트
+    Wrapper->>Wrapper: 입력 프롬프트(Context)에 히스토리 주입
+    
+    %% 메인 로직
+    Wrapper->>Agent: invoke(augmented_input)
+    activate Agent
+    Agent-->>Wrapper: Return output (AI 응답)
+    deactivate Agent
+    
+    %% Post-hook 개념
+    Wrapper->>History: add_messages([User_msg, AI_msg])
+    Note right of History: AI 추론 완료 후 세션 기록에 쌍으로 비동기 저장
+    
+    Wrapper-->>User: Return output
+    deactivate Wrapper
+```
+
+#### 3) LlamaIndex (AgentRunner & MemoryModule 패턴)
+LlamaIndex는 에이전트의 컨트롤러(Runner)와 사고 주체(Worker)를 분리합니다. `AgentRunner`가 제어의 흐름을 쥐고 `MemoryModule`을 호출하는 방식입니다.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant Runner as AgentRunner
+    participant Memory as BaseMemory (Memory Module)
+    participant Worker as AgentWorker (LLM / Tool Router)
+
+    User->>Runner: chat(message)
+    activate Runner
+    
+    %% Pre-hook 개념
+    Runner->>Memory: put(ChatMessage(role='user', content=message))
+    Note right of Memory: 유저 입력 사전 저장
+    
+    Runner->>Memory: get() OR get_all()
+    Memory-->>Runner: Return context windows
+    
+    %% 메인 추론 루프
+    Runner->>Worker: run_step(input, chat_history)
+    activate Worker
+    Worker-->>Runner: TaskStepOutput (AI 완료 응답)
+    deactivate Worker
+    
+    %% Post-hook 개념
+    Runner->>Memory: put(ChatMessage(role='assistant', content=response))
+    Note right of Memory: AI 응답 사후 저장
+    
+    Runner-->>User: Return AgentChatResponse
+    deactivate Runner
+```
+
+#### 4) AutoGen (Event Hook 패턴)
+AutoGen은 에이전트 객체 간의 메시지 송수신 이벤트 기반으로 동작합니다. 메시지가 수신되면 기본 리스트에 추가되고, 응답을 생성하는 과정에서 등록된 `register_reply` 콜백 훅(Hooks)들이 장기 기억 주입 등의 작업을 처리합니다.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User / Agent A
+    participant AgentB as ConversableAgent B
+    participant Memory as self._oai_messages
+    participant Hooks as Registered Reply Functions(Callbacks)
+    participant LLM as OpenAI Wrapper
+
+    User / Agent A->>AgentB: send(message)
+    activate AgentB
+    AgentB->>AgentB: receive(message)
+    
+    %% 단기 메모리 업데이트
+    AgentB->>Memory: append(message)
+    Note right of Memory: Main 로직 전 단기 기억 풀에 즉시 저장
+    
+    AgentB->>AgentB: generate_reply()
+    activate AgentB
+    
+    %% Hook 체인 점화
+    loop Over registered_reply_funcs
+        AgentB->>Hooks: _invoke_reply_hook()
+        Note over Hooks: 메모리 플러그인(Mem0 등)이 여기서 과거 문맥 검색/주입
+        Hooks-->>AgentB: Return (is_final, reply, context)
+        
+        opt If needs LLM generation
+            AgentB->>LLM: _generate_oai_reply(context)
+            LLM-->>AgentB: Generated Text
+        end
+    end
+    
+    %% 응답 저장
+    AgentB->>Memory: append(generated_reply)
+    AgentB-->>User / Agent A: Return reply
+    deactivate AgentB
+    deactivate AgentB
+```
+
 ---
 
 ## 4. 확장된 메모리 관리 아키텍처

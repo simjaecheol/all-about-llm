@@ -70,3 +70,30 @@ nav_order: 2
 - **Text-to-SQL (NL2SQL) 에이전트**: 데이터 베이스 스키마를 에이전트의 컨텍스트에 주입하여, 사용자의 자연어 질문을 SQL 쿼리로 실시간 변환하여 실행합니다. 이를 통해 방대한 테이블에서 필요한 팩트만 즉각 발췌해 단기 기억으로 활용합니다.
 - **Semantic Layer (의미론적 계층)**: 복잡한 원천 DB 테이블을 에이전트가 직접 접근하게 하는 대신, 비즈니스 용어로 정리된 '의미론적 뷰(Semantic View)' 계층 또는 메트릭 레이어를 제공함으로써 쿼리 오류나 혼란을 통제합니다.
 - **보안 샌드박싱과 권한 제어**: NL2SQL 방식에서는 에이전트 모델의 자율성으로 인해 `DROP TABLE`과 같은 파괴적 쿼리 전송 위험이 있습니다. 인프라 단에서 에이전트에게 할당하는 DB 연결 쿼리 토큰은 엄격한 조회(Read-Only) 권한만 갖도록 Role-Based Access Control(RBAC) 체계를 구성해야 합니다.
+
+---
+
+## 5. 메모리 DB 통합 아키텍처 및 데이터 스키마 단위
+
+현대적인 에이전트 메모리는 단일 DB가 아닌 목적에 맞는 다중 스키마를 혼합하여 사용합니다. 각 저장소 계층의 전형적인 데이터 구성(Schema)은 다음과 같습니다.
+
+### 5.1. Session DB 스냅샷 구조 (LangGraph 기반 예시)
+RDBMS 기반 세션 상태 추적기는 주로 타임스탬프 기반 트리 구조를 사용합니다.
+- `thread_id` (String): 각 대화 세션의 고유 식별자.
+- `checkpoint_id` (String): 분기를 위한 타임스탬프 기반 고유 ID.
+- `parent_checkpoint_id` (String): 이전 상태의 ID (Time-travel 및 롤백 지원).
+- `checkpoint` (JSONB / BLOB): 에이전트의 내부 State 전체 직렬화 객체 (메시지 배열, 함수 호출 상태 등).
+- `metadata` (JSONB): 검색 필터링을 위한 속성(유저 ID, 테넌트 구분 등).
+
+### 5.2. Vector DB 레코드 구조 (일반적인 Semantic DB 예시)
+단일 세션을 넘어 영구적으로 남아야 하는 요약된 팩트(Fact)의 저장 구조입니다.
+- `id` (UUID): 메모리 파편의 고유 식별값.
+- `vector` (Array[Float]): 텍스트를 숫자로 변환한 고차원 배열 (예: 1536차원).
+- `text` (String): 추출된 팩트 원문 (예: *"사용자는 Python 언어를 선호함"*).
+- `metadata` (JSON): RAG 쿼리 필터링 및 권한 제어를 위한 필수 하이브리드 필드 (`user_id`, `agent_id`, `session_source`, `created_at` 등).
+
+### 5.3. 통합 메모리 플랫폼 (Memory-as-a-Service 적용 사례)
+최근 인프라 트렌드는 개발자가 직접 RDBMS, Vector DB, Graph DB 복잡도를 관리하지 않도록, 모든 것을 내재화하여 하나의 통합 API로 제공하는 전용 메모리 플랫폼을 도입하는 것입니다.
+
+- **Zep (Zep Analytics):** 내부적으로 1개의 PostgreSQL(pgvector 활성화)을 사용하여 Chat History 테이블, Document Vector 테이블, Entity 테이블(Graph)을 통합 관리합니다. 대화가 수신되면 비동기 백그라운드 프로세스가 RDBMS 기본 저장, 요약 벡터 추출, 인물/객체 추출을 단일 인프라에서 알아서 수행합니다.
+- **Mem0:** LLM 자체를 중간 DB 제어 계층에 삽입하여, 새로운 발화가 들어왔을 때 기존 저장소 내용을 어떻게 수정할지(Create, Update, Delete)를 스스로 판단해 DB에 CRUD 트랜잭션을 전송하는 추상화 레이어를 제공합니다.

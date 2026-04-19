@@ -35,6 +35,83 @@ nav_order: 2.6
 ### 2.3. 동적 컨텍스트 주입 (Retrieval)
 사용자가 새로운 질문을 던지면, 에이전트는 질문의 임베딩을 계산하고 로컬 인덱스에서 가장 유사한 과거 메모리 조각(Snippet)들을 찾아냅니다. 이후 해당 마크다운 파일의 본문을 읽어와 현재 LLM의 프롬프트에 동적으로 삽입합니다.
 
+### 2.4. 작동 로직 시퀀스 분석
+
+이러한 메모리 임베딩 아키텍처는 고가의 호스팅 DB 없이도 파일 동기화와 계층적 검색을 통해 시스템의 일관성을 유지합니다. 시스템은 크게 **업데이트(인덱싱)** 흐름과 **호출(검색 단위)** 흐름으로 동작합니다.
+
+#### 1) 메모리 업데이트 및 인덱싱 (Write & Index Flow)
+작업 대화 기록을 요약하여 마크다운 파일로 저장하고, 파일 시스템 이벤트를 감지해 백그라운드에서 로컬 사이드카 인덱스를 갱신하는 시퀀스입니다.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Main as Agent Router
+    participant SLM as 백그라운드 요약(SLM)
+    participant FS as 로컬 파일 시스템 (.md)
+    participant Embed as 초경량 임베딩 모델
+    participant Index as 사이드카 인덱스 (.index)
+
+    Note over Main: Task 또는 세션 종료 시<br/>메모리 업데이트 트리거 발생
+    
+    %% 요약 및 마크다운 쓰기
+    Main->>SLM: Raw 대화/작업 로그 압축 요청
+    activate SLM
+    SLM-->>Main: 의미 단위(Semantic Chunk)로 분할된 요약 텍스트
+    deactivate SLM
+    Main->>FS: 마크다운(.md) 파일로 저장
+    
+    Note right of FS: 🚨 사용자가 직접 에디터로 마크다운 파일을<br>열어 잘못된 사실을 교정 가능 (Human-in-the-loop)
+    
+    %% 인덱싱
+    opt Auto-Sync (Event Watcher)
+        FS-->>Embed: 파일 작성/수정 완료 이벤트 감지
+        activate Embed
+        Embed->>Embed: 마크다운 텍스트 청크 단위 벡터 변환
+        Embed->>Index: 벡터 데이터 및 대상 파일 라인 매핑 정보(Metadata) 저장
+        deactivate Embed
+        Note over Index: JSON/SQLite 형태의 로컬 인덱스 갱신 완료
+    end
+```
+
+#### 2) 메모리 검색 및 주입 (Retrieval & Call Flow)
+새로운 쿼리가 들어왔을 때, 벡터 DB를 통해 파일의 '위치'만 찾은 뒤, 원본 텍스트를 마크다운에서 직접 가져와 환각(Hallucination)을 최소화하는 하이브리드 주입 시퀀스입니다.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant Router as Agent Router
+    participant Embed as 초경량 임베딩 모델
+    participant Index as 사이드카 인덱스 (.index)
+    participant FS as 파일 시스템 (.md)
+    participant LLM as Main 추론 LLM
+
+    User->>Router: 새로운 질문 수신
+    activate Router
+    
+    %% 쿼리 임베딩
+    Router->>Embed: 현재 질문 벡터화 요청
+    Embed-->>Router: Query Vector 데이터 반환
+    
+    %% 계층적 검색 (Hierarchical Retrieval)
+    Router->>Index: [1차 검색] 요약(Summary) 인덱스 참조
+    Index-->>Router: 유사도 높은 대상 마크다운 파일 리스트 반환
+    
+    Router->>Index: [2차 검색] 선택된 파일 내부의 세부 청크(Detail) 검색
+    Index-->>Router: 가장 정확한 청크의 위치 정보 (Line offset 등) 반환
+    
+    %% 원본 추출
+    Router->>FS: 검색된 위치 기반으로 마크다운 텍스트 직접 Read
+    FS-->>Router: 인간이 편집 가능한 마크다운 원문(Raw Text) 반환
+    
+    %% 주입 및 추론
+    Router->>Router: 시스템 프롬프트 + 검색된 마크다운 원문(Context) + 사용자 쿼리 병합
+    Router->>LLM: 최종 추론 및 답변 생성 요청
+    LLM-->>Router: 최종 답변 (Final Answer)
+    Router-->>User: 출력 반환
+    deactivate Router
+```
+
 ---
 
 ## 3. OpenClaw의 구현 사례
