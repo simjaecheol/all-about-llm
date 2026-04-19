@@ -28,6 +28,10 @@ AX(AI Transformation)로 나아가기 위한 가장 핵심적인 '기초 체력'
 - Cloud, Big Data, IoT, RPA 등 DX의 기술적 근간
 
 ### 3. [DX 구현 방법론 및 실무](./methodologies)
+- 비즈니스 현장의 DX 적용 프로세스 및 엔지니어링 실무 기법
+
+### 4. [데이터 파이프라인 (Data Pipeline)](./data-pipeline)
+- ETL vs ELT, Batch vs Streaming 설계 원칙
 - Apache Airflow 기반 데이터 파이프라인 구성 실무
 - 데이터 품질 향상을 위한 메달리온 아키텍처(Bronze/Silver/Gold) 구성
 - Modern Data Stack, dbt, 데이터 거버넌스 등 실무 요소
