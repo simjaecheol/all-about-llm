@@ -1,6 +1,5 @@
 ---
 layout: default
----
 title: Agent Harness
 has_children: true
 nav_order: 74
@@ -50,6 +49,19 @@ nav_order: 74
 - 테스트 케이스 설계 및 데이터셋 구축
 - LLM-as-a-Judge를 활용한 정성적 평가 자동화
 - 샌드박스 보안 및 결과 로깅 전략
+
+---
+
+## 최신 연구 동향: 관측 가능성 기반 하네스 자동 진화
+
+2026년 4월 발표된 연구 *"Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses" (arXiv:2604.25850)*는 사람이 개입하지 않고도 하네스 구성요소(시스템 프롬프트, 도구, 미들웨어)를 **자율적으로 진화**시키는 알고리즘을 제안했습니다.
+
+이 시스템은 세 가지 관측 계층을 도입합니다:
+- **컴포넌트 관측성**: 단일 구성요소의 성능 매핑
+- **경험 관측성**: 실행 데이터 코퍼스의 인덱싱 및 분석
+- **결정 관측성**: 예측과 검증을 결합한 매니페스트 기반 판단
+
+10회의 진화 이터레이션 후 **Terminal-Bench 2의 Pass@1 성공률이 69.7%에서 77.0%로 상승**했으며, 이는 사람이 직접 설계한 최고 수준의 하네스(Codex-CLI, 71.9%)를 압도합니다. 특히 성과의 핵심이 시스템 프롬프트 텍스트 교체가 아닌 **도구 및 미들웨어 구조의 진화**에 집중된 점이 주목됩니다. 실제 적용 사례로 [Hermes Agent](../open_source_project/hermes-agent.md)의 자가 진화 스킬 추출 메커니즘을 참고할 수 있습니다.
 
 ---
 

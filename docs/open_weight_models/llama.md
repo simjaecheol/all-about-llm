@@ -30,5 +30,20 @@ Meta(구 Facebook)에서 개발한 Llama(Large Language Model Meta AI) 시리즈
 *   **RoPE (Rotary Positional Embeddings)**: 긴 문맥 처리를 위한 효율적인 위치 인코딩.
 *   **생태계 호환성**: 대부분의 LLM 라이브러리(llama.cpp, vLLM, Ollama 등)에서 기본적으로 지원.
 
+## 주요 파생 모델: Hermes 시리즈 (Nous Research)
+
+Llama 아키텍처의 대표적인 에이전트 특화 파생 모델로, **Nous Research**가 Llama 3.1을 기반으로 개발한 Hermes 시리즈가 있습니다. 이 모델들은 자율형 에이전트([Hermes Agent](../open_source_project/hermes-agent.md))의 백엔드 추론 엔진으로 설계되어, Llama 생태계의 확장 가능성을 입증하는 핵심 사례입니다.
+
+| 비교 항목 | Hermes 3 (2024.08) | Hermes 4 (2025.08) |
+| :--- | :--- | :--- |
+| **파라미터** | 3B, 8B, 70B, 405B | 14B, 70B, 405B |
+| **훈련 방식** | DPO + LoRA(r=32, α=16) + NEFTune | 60B 토큰 추론 궤적 데이터셋 |
+| **추론 방식** | 단일 패스 지시 이행 | `<think>` 태그 기반 하이브리드 추론 |
+| **핵심 강점** | 안정적 JSON 출력, 함수 호출 정확성 SOTA | 무검열 중립 정렬, LiveCodeBench 54.6% |
+
+*   **Hermes 3**: 중립적 정렬(Neutrally-aligned) 기반 범용 모델. 에이전트 프레임워크에 필수적인 함수 호출 및 구조화된 출력 안정성에서 오픈 웨이트 모델 중 최상위 수준을 달성했습니다.
+*   **Hermes 4**: 사용자가 `<think>` 태그로 모델의 사고 깊이를 동적으로 제어하는 하이브리드 추론 모델. 에이전트 파이프라인에서 안전 필터로 인한 실행 거부 문제를 해결하기 위해 **검열 없는 사용자 지시 이행**을 극대화했습니다.
+
 ## 평가 및 벤치마크
 Llama 시리즈는 MMLU, GPQA, HumanEval 등 주요 지표에서 오픈 소스 모델 중 항상 최상위권을 유지하며, 특히 지시 이행(Instruction Following) 능력에서 높은 신뢰도를 보입니다.
+

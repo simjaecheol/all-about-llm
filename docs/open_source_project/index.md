@@ -15,6 +15,7 @@ nav_order: 150
 - **[OpenManus](./open_manus.md)**: Manus AI의 오픈소스 구현체로, 사용자의 목표를 스스로 계획하고 실행하는 범용 에이전트입니다.
 - **[OpenClaw](./open_claw.md)**: 메시징 앱과 연동되어 실제 업무(웹 서핑, 예약, 코드 실행 등)를 대행하는 개인용 AI 비서입니다.
 - **[NanoClaw](./nanoclaw.md)**: 보안과 격리를 최우선으로 하는 OpenClaw의 보안 특화 대안 프로젝트입니다.
+- **[Hermes Agent](./hermes-agent.md)**: Nous Research가 개발한 인프라 우선(Infrastructure-first) 자율형 에이전트로, 자가 학습 루프와 다중 모델 라우팅을 통해 비용 효율적인 장기 워크플로우를 수행합니다.
 
 ### AI 코딩 어시스턴트 (AI Coding Assistants)
 - **[Aider](./aider.md)**: 터미널 기반의 AI 페어 프로그래머로, 기존 코드베이스를 이해하고 Git 커밋까지 자동으로 수행합니다.
