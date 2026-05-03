@@ -2,7 +2,7 @@
 layout: default
 title: Agent as a Service (AaaS)
 parent: AI Transformation (AX)
-nav_order: 8
+nav_order: 9
 ---
 
 # Agent as a Service (AaaS)

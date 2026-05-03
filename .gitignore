@@ -23,3 +23,4 @@ gha-creds-*.json
 # skills
 .agents/
 skills-lock.json
+.obsidian/
